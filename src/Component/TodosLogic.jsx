@@ -1,16 +1,16 @@
 import React from 'react'
 import TodosList from './TodosList'
-
+import InputTodo from './InputTodo'
 
 export default function TodosLogic() {
 
-  const styleContainer = {}
+  const styleContainer = {
+    
+  }
 
   return (
     <div style={styleContainer}>
-      {
-        //Input
-      }
+      <InputTodo />
       <TodosList />
     </div>
   )
