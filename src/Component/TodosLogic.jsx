@@ -10,6 +10,7 @@ export default function TodosLogic() {
     alignItems: 'center',
     width: '40%',
     padding: '0 6vh',
+    gap: '3vh',
 
   }
 

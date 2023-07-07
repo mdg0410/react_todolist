@@ -4,15 +4,19 @@ import TodoItem from './TodoItem'
 export default function TodosList() {
 
   const styleContainer = {
-
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+    padding: '2vh',
   }
 
   return (
-    <div style={styleContainer}>
+    <ul style={styleContainer}>
       {
         //Map
       }
       <TodoItem />
-    </div>
+    </ul>
   )
 }
