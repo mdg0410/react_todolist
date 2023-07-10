@@ -1,11 +1,24 @@
-import React from 'react'
+import { useState } from 'react';
 import '../Styles/InputTodo.css'
 
-export default function InputTodo() {
+// eslint-disable-next-line react/prop-types
+export default function InputTodo({addTodoItem}) {
+
+  const divContainer = {
+    display: 'flex',
+  width: '95%',
+  flexDirection: 'column',
+  }
+
+  const span = {
+    display: 'flex',
+    marginLeft: '1vh',
+    color: '#f00'
+  }
 
   const formContainer = {
   display: 'flex',
-  width: '95%',
+  width: '100%',
   padding: '2.5vh',
   borderRadius: '1.5vh',
   boxShadow: '0 4px 14px 0 rgba(70, 70, 70, 0.38)',
@@ -30,15 +43,38 @@ export default function InputTodo() {
   marginRight: '10px',
   }
 
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (title.trim()){
+      addTodoItem(title);
+      setTitle('');
+      setMessage('');
+    } else {
+      setMessage('Please add item.')
+    }
+  }
+
+  const handleChange = (e) => {
+    setTitle(e.target.value);
+  }
+
   return (
-    <form  style={formContainer}>
+    <div style={divContainer}>
+    <form  style={formContainer} onSubmit={handleSubmit}>
       <input
-        type='text'
-        placeholder='Add Todo...'
         style={inputStyle} 
         className="input-text"
+        type='text'
+        placeholder='Add Todo...'
+        value={title}
+        onChange={handleChange}
       />
        <button type="submit" style={buttonSubmit}>submit</button>
     </form>
+    <span style={span}>{message}</span>
+    </div>
   )
 }

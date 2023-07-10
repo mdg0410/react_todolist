@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
-export default function TodoItem() {
+// eslint-disable-next-line react/prop-types
+export default function TodoItem({ itemProp, handleChange, delTodo }) {
 
   const styleContainer = {
     display: 'flex',
@@ -38,20 +39,40 @@ export default function TodoItem() {
     background: 'transparent',
   }
 
+  const completedStyle = {
+    width: '100%',
+    padding: '10px',
+    border: 'none',
+    outline: 'none',
+    background: 'transparent',
+    fontStyle: 'italic',
+    color: '#595959',
+    opacity: 0.4,
+    textDecoration: 'line-through',
+  };
+
   return (
-    <li style={styleContainer}>
+    <li style={styleContainer }>
       <input
         style={checkbox}
         type='checkbox'
-        checked='true'
+        // eslint-disable-next-line react/prop-types
+        checked={itemProp.completed}
+        // eslint-disable-next-line react/prop-types
+        onChange={() => handleChange(itemProp.id)}
       />
       <input 
-        style={input}
+        // eslint-disable-next-line react/prop-types
+        style={itemProp.completed ? completedStyle : input}
         type='text'
-        defaultValue='test1'
+        // eslint-disable-next-line react/prop-types
+        defaultValue={itemProp.title}
       />
       <button style={button}><FontAwesomeIcon icon={faPen} /></button>
-      <button style={button}><FontAwesomeIcon icon={faTrash} /></button>
-    </li>
+      {
+      // eslint-disable-next-line react/prop-types
+      <button style={button} onClick={() => delTodo(itemProp.id)}><FontAwesomeIcon icon={faTrash} /></button>
+      }
+      </li>
   )
 }

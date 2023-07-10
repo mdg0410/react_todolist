@@ -9,7 +9,8 @@ export default function Header() {
     alignItems: 'center',
     padding: '3vh',
     color: 'rgba(24, 23, 23, 0.364)',
-    gap: '1vh'
+    gap: '1vh',
+    textAlign: 'center'
   }
 
   const h1 = {
