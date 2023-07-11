@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TodosList from './TodosList'
 import InputTodo from './InputTodo'
 import saveStorage from '../Logic/localStorage';
@@ -6,41 +6,18 @@ import { v4 as uuidv4 } from "uuid";
 
 export default function TodosLogic() {
 
-  const styleContainer = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '40%',
-    padding: '0 6vh',
-    gap: '3vh',
-  }
+  const [todos, setTodos] = useState(getInitialTodos());
 
-  const storage = () => {
-    if (localStorage.getItem('tasksReact')) {
-      return JSON.parse(localStorage.getItem('tasksReact'));
-    }
-    return [{
-      id: uuidv4(),
-      title: 'Setup development environment',
-      completed: true,
-    },
-    {
-      id: uuidv4(),
-      title: 'Develop website and add content',
-      completed: false,
-    },
-    {
-      id: uuidv4(),
-      title: 'Deploy to live server',
-      completed: false,
-    }];
+  function getInitialTodos() {
+    const temp = localStorage.getItem('todos');
+    const savedTodos = JSON.parse(temp);
+    return savedTodos || [];
   };
 
-  const data = storage();
-
-  const [todos, setTodos] = useState(data)
-
-  saveStorage(todos);
+  useEffect(() => {
+    const temp = JSON.stringify(todos);
+    localStorage.setItem('todos', temp);
+  }, [todos]);
 
   const handleChange = (id) => {
     setTodos((prevState) =>
@@ -54,7 +31,6 @@ export default function TodosLogic() {
         return todo;
       })
     );
-    saveStorage(todos);
   };
 
   const delTodo = (id) => {
@@ -63,7 +39,6 @@ export default function TodosLogic() {
         return todo.id !== id;
       }),
     ]);
-    saveStorage(todos);
   };
 
   const addTodoItem = (title) => {
@@ -72,16 +47,27 @@ export default function TodosLogic() {
       title: title,
       completed: false,
     };
-    setTodos([...todos, newTodo]);
-  }
+  };
+
+  const setUpdate = (updatedTitle, id) => {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id === id) {
+          todo.title = updatedTitle;
+        }
+        return todo;
+      })
+    );
+  };
 
   return (
-    <div style={styleContainer}>
+    <div>
       <InputTodo addTodoItem={addTodoItem}/>
       <TodosList 
       todosProps={todos} 
       handleChange={handleChange} 
       delTodo={delTodo}
+      setUpdate={setUpdate}
       />
     </div>
   )

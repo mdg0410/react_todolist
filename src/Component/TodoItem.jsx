@@ -1,78 +1,60 @@
-import React from 'react'
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import styles from '../Styles/TodoItem.module.css'
 
-// eslint-disable-next-line react/prop-types
-export default function TodoItem({ itemProp, handleChange, delTodo }) {
-
-  const styleContainer = {
-    display: 'flex',
-    width: '100%',
-    fontSize: '1rem',
-    borderRadius: '1vh',
-  listStyleType: 'none',
-  padding: '2vh 3vh',
-  borderBottom: '1px solid #fff',
-  background: '#f0efef',
-  gap: '2vh',
-  }
-
-  const checkbox = {
-
-  }
-
-  const button = {
-    cursor: 'pointer',
-    background: 'transparent',
-  order: '2',
-  outline: 'none',
-  border: 'none',
-  marginLeft: '7px',
-  }
-
-  const input = {
-    width: '100%',
-    padding: '10px',
-    border: 'none',
-    outline: 'none',
-    background: 'transparent',
-  }
+export default function TodoItem({ itemProp, handleChange, delTodo, setUpdate  }) {
 
   const completedStyle = {
-    width: '100%',
-    padding: '10px',
-    border: 'none',
-    outline: 'none',
-    background: 'transparent',
     fontStyle: 'italic',
     color: '#595959',
     opacity: 0.4,
     textDecoration: 'line-through',
   };
 
+  const [editing, setEditing] = useState(false);
+
+  const handleEditing = () => {
+    setEditing(true);
+  };
+
+  const handleUpdatedDone = (event) => {
+    if (event.key === 'Enter') {
+      setEditing(false);
+    }
+  };
+
+  let viewMode = {};
+  let editMode = {};
+  if (editing) {
+    viewMode.display = 'none';
+  } else {
+    editMode.display = 'none';
+  }
+
   return (
-    <li style={styleContainer }>
+    <li className={styles.item}>
+      <div className={styles.content} style={viewMode}>
+        <input
+          type='checkbox'
+          checked={itemProp.completed}
+          onChange={() => handleChange(itemProp.id)}
+        />
+        <button onClick={handleEditing}><FontAwesomeIcon icon={faPen} /></button>
+        <button onClick={() => delTodo(itemProp.id)}><FontAwesomeIcon icon={faTrash} /></button>
+        <span style={itemProp.completed ? completedStyle : null}></span>
+        {itemProp.title}
+      </div>
       <input
-        style={checkbox}
-        type='checkbox'
-        // eslint-disable-next-line react/prop-types
-        checked={itemProp.completed}
-        // eslint-disable-next-line react/prop-types
-        onChange={() => handleChange(itemProp.id)}
+        type="text"
+        value={itemProp.title}
+        className={styles.textInput}
+        style={editMode}
+        onChange={(e) => setUpdate(e.target.value, itemProp.id)}   
+        onKeyDown={handleUpdatedDone}
       />
-      <input 
-        // eslint-disable-next-line react/prop-types
-        style={itemProp.completed ? completedStyle : input}
-        type='text'
-        // eslint-disable-next-line react/prop-types
-        defaultValue={itemProp.title}
-      />
-      <button style={button}><FontAwesomeIcon icon={faPen} /></button>
-      {
-      // eslint-disable-next-line react/prop-types
-      <button style={button} onClick={() => delTodo(itemProp.id)}><FontAwesomeIcon icon={faTrash} /></button>
-      }
-      </li>
+    </li>
   )
 }

@@ -1,22 +1,24 @@
-import React from 'react'
-import Header from './Header';
-import TodosLogic from './TodosLogic';
+import { Routes, Route } from 'react-router-dom';
+import '../Styles/app.css'
+
+import Home from '../Routes/Home';
+import About from '../Routes/About';
+import Login from '../Routes/Login';
+import Profile from '../Routes/Profile';
+import NotMatch from '../Routes/NoMatch';
+import Layout from './Layout';
 
 export default function App() {
 
-  const style = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingTop: '10vh', 
-    gap: '2vh',
-    width: '100%',
-  }
-
   return (
-    <div style={style}>
-      <Header />
-      <TodosLogic />
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="login" element={<Login />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="*" element={<NotMatch />} />
+      </Route>
+    </Routes>
   );
 }
