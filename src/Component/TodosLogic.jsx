@@ -47,6 +47,7 @@ export default function TodosLogic() {
       title: title,
       completed: false,
     };
+    setTodos([...todos, newTodo]);
   };
 
   const setUpdate = (updatedTitle, id) => {
